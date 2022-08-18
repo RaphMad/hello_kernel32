@@ -6,6 +6,8 @@ set vcv="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Bu
 :: May need an absolute path if your nasm.exe is not on %PATH%
 set nasm="nasm.exe"
 
+if not exist out mkdir out
+
 :: Perform the assembly
 %nasm% -f win64 src\hello.asm -o out\hello.obj
 
