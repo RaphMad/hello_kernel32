@@ -77,7 +77,7 @@ _start:
     push 0
     sub rsp, 32 ;; The previous push aligned us to 16 bytes, only allocate shadow space
     call WriteFile
-    add rsp, 40 ;; Undo shadow space + push
+    ;; Would need to fix rsp here (add 40 for shadow space 32 and push 8), but the next call can just use re-use it.
 
     ;; ExitProcess(code)
     ;;
@@ -85,6 +85,5 @@ _start:
     ;;
     ;; Parameter 1 (rcx): Exit code
     mov rcx, rax
-    sub rsp, 40 ;; Shadow space + 8 byte alignment
     call ExitProcess
     ;; add rsp, 40 ;; Not necessary because the previous function call will end the program anyway
