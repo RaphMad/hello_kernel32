@@ -71,7 +71,7 @@ _start:
     ;; Parameter 5 (on stack): Unused optional parameter, null pointer
     ;; Return value (rax): Nonzero on success
     mov rcx, rax
-    mov rdx, msg
+    lea rdx, [msg]
     mov r8, msg_len
     mov r9, 0
     push 0
