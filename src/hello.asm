@@ -32,13 +32,13 @@ extern ExitProcess
 ;; This section contains read-only data
 section .rodata
 
-;; Store the output string followed by CRLF as a sequence of bytes, at address 'msg'
-msg db "Hello World!", 0x0d, 0x0a
+    ;; Store the output string followed by CRLF as a sequence of bytes, at address 'msg'
+    msg db "Hello World!", 0x0d, 0x0a
 
-;; The length will be needed by the output function, and can be statically calculated at assembly time by using 'equ'
-;; It is actually a nifty trick that calculates the offset between the current address '$', and the address of 'msg'
-;; See https://nasm.us/doc/nasmdoc3.html#section-3.2.4
-msg_len equ $ - msg
+    ;; The length will be needed by the output function, and can be statically calculated at assembly time with 'equ'
+    ;; It is actually a nifty trick that calculates the offset between the current address '$', and the address of 'msg'
+    ;; See https://nasm.us/doc/nasmdoc3.html#section-3.2.4
+    msg_len equ $ - msg
 
 
 ;; This section contains the code
