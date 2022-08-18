@@ -84,7 +84,7 @@ _start:
     ;; See https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-exitprocess
     ;;
     ;; Parameter 1 (rcx): Exit code
-    xor rcx, rax
+    mov rcx, rax
     sub rsp, 40 ;; Shadow space + 8 byte alignment
     call ExitProcess
     ;; add rsp, 40 ;; Not necessary because the previous function call will end the program anyway
