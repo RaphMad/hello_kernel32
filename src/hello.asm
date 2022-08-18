@@ -74,7 +74,7 @@ _start:
     mov rdx, msg
     mov r8, msg_len
     mov r9, 0
-    push qword 0
+    push 0
     sub rsp, 32 ;; The previous push aligned us to 16 bytes, only allocate shadow space
     call WriteFile
     add rsp, 40 ;; Undo shadow space + push
