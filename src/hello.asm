@@ -45,6 +45,10 @@ section .rodata
 section .text
 
 _start:
+    ;; Allocate 32 bytes of shadow space and 8 bytes to keep the stack 16-byte aligned
+    ;; The additional 8 bytes can actually be used for storing the 5th parameter of WriteFile later on
+    sub rsp, 40
+
     ;; For being able to print text, we first need to acquire a HANDLE to STDOUT
     ;; This HANDLE is a required parameter for the call to WriteFile
 
@@ -55,9 +59,7 @@ _start:
     ;; Parameter 1 (rcx): requests the type of HANDLE, -11 is the constant for STDOUT
     ;; Return value (rax): HANDLE (an address with some type of meaning) is stored in rax, as per calling conventions
     mov rcx, -11
-    sub rsp, 40 ;; Allocate 32 bytes of shadow space and 8 bytes to keep the stack 16-byte aligned
     call GetStdHandle
-    add rsp, 40 ;; Undo shadow space + alignment padding
 
     ;; code = WriteFile(HANDLE, msg, msg_len, NULL, NULL)
     ;;
@@ -74,10 +76,8 @@ _start:
     lea rdx, [msg]
     mov r8, msg_len
     mov r9, 0
-    push 0
-    sub rsp, 32 ;; The previous push aligned us to 16 bytes, only allocate shadow space
+    mov qword [rsp + 32], 0 ;; We already allocated the shadow space in the prolog and can't use push.
     call WriteFile
-    ;; Would need to fix rsp here (add 40 for shadow space 32 and push 8), but the next call can just use re-use it.
 
     ;; ExitProcess(code)
     ;;
