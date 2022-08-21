@@ -89,4 +89,4 @@ _start:
     mov rcx, rax
     call ExitProcess
     ;; ExitProcess will internally issue the syscall for terminating the process after doing some cleanup
-    ;; We messed with rsp in the prolog which would make a `ret` impossible, but
+    ;; We messed with rsp in the prolog which would make a `ret` impossible anyway
