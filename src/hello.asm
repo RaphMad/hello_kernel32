@@ -85,8 +85,10 @@ _start:
     ;;
     ;; See https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-exitprocess
     ;;
-    ;; Parameter 1 (rcx): Exit code
-    mov rcx, rax
+    ;; Parameter 1 (rcx): Exit code, inverted result of WriteFile
+    xor rcx, rcx
+    test rax, rax
+    setz al
     call ExitProcess
     ;; ExitProcess will internally issue the syscall for terminating the process after doing some cleanup
     ;; We messed with rsp in the prolog which would make a `ret` impossible anyway
