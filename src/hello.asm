@@ -45,9 +45,11 @@ section .rodata
 section .text
 
 _start:
-    ;; Allocate 32 bytes of shadow space and 8 bytes to keep the stack 16-byte aligned
-    ;; The additional 8 bytes can actually be used for storing the 5th parameter of WriteFile later on
-    sub rsp, 40
+    ;; This will discard the return address on the stack which we don't need since we will never call `ret`,
+    ;; but terminate via `call ExitProcess`.
+    ;; It has the positive effect of aligning the stack to 16bytes for upcoming calls, and will provide _our_
+    ;; shadow space to those called functions.
+    add rsp, 8;
 
     ;; For being able to print text, we first need to acquire a HANDLE to STDOUT
     ;; This HANDLE is a required parameter for the call to WriteFile
@@ -86,4 +88,5 @@ _start:
     ;; Parameter 1 (rcx): Exit code
     mov rcx, rax
     call ExitProcess
-    ;; add rsp, 40 ;; Not necessary because the previous function call will end the program anyway
+    ;; ExitProcess will internally issue the syscall for terminating the process after doing some cleanup
+    ;; We messed with rsp in the prolog which would make a `ret` impossible, but
